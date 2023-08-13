@@ -115,13 +115,13 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         close(conn);
     }
 
-    public void insertEmp(int idEmployee, int idFeedback) throws Exception {
+    public void insertEmp(int idEmployee) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO hth.feedback_x_employee (id_employee, id_feedback)VALUES(?,(SELECT MAX(id) \n" +
 "                FROM hth.feedback where id_type = '22' ))");
-        ps.setInt(1, 0);
-        ps.setInt(2, idEmployee);
-        ps.setInt(3, idFeedback);
+       
+        ps.setInt(1, idEmployee);
+        
 
         ps.executeUpdate();
         close(ps);
