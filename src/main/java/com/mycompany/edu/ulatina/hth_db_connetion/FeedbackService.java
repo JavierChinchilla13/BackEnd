@@ -117,7 +117,8 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
 
     public void insertEmp(int idEmployee, int idFeedback) throws Exception {
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO hth.feedback_x_employee VALUES(?,?,?)");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO hth.feedback_x_employee (id_employee, id_feedback)VALUES(?,(SELECT MAX(id) \n" +
+"                FROM hth.feedback where id_type = '22' ))");
         ps.setInt(1, 0);
         ps.setInt(2, idEmployee);
         ps.setInt(3, idFeedback);
@@ -236,6 +237,34 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         ps.setInt(1, employee);
         ps.setInt(2, project);
         
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            String description = rs.getString("DESCRIPTION");
+            Date dateOfFeedback = rs.getDate("DATE_OF_FEEDBACK");
+            int idStatus = rs.getInt("ID_STATUS");
+            int idType = rs.getInt("ID_TYPE");
+            int idCreator = rs.getInt("ID_CREATOR");
+
+            FeedbackTO feedbackTO = new FeedbackTO(id, name, description, dateOfFeedback, idStatus, idType, idCreator);
+            feedbackList.add(feedbackTO);
+        }
+        close(rs);
+        close(ps);
+        close(conn);
+        return feedbackList;
+    }
+    
+    public List<FeedbackTO> getEFeedback(int employee) throws Exception {
+        Connection conn = getConnection();
+        List<FeedbackTO> feedbackList = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT hth.feedback.id, hth.feedback.name, hth.feedback.date_of_feedback, hth.feedback.id_status, hth.feedback.id_type, hth.feedback.id_creator \n"
+                + "FROM hth.feedback, hth.feedback_x_employee\n"
+                + "where id_employee = ? and hth.feedback.id = id_feedback");
+        ps.setInt(1, employee);
+        
+
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("ID");
