@@ -61,7 +61,11 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         Connection conn = getConnection();
         PreparedStatement ps = null;
 
-        ps = getConn().prepareStatement("DELETE FROM HTH.FEEDBACK WHERE ID = ?");
+        ps = getConn().prepareStatement("DELETE HTH.FEEDBACK, HTH.feedback_x_employee \n"
+                + "FROM HTH.FEEDBACK\n"
+                + "JOIN HTH.feedback_x_employee \n"
+                + "ON HTH.feedback_x_employee.id_feedback = HTH.FEEDBACK.ID\n"
+                + "WHERE HTH.FEEDBACK.ID = ?");
         ps.setInt(1, feedback.getId());
 
         ps.executeUpdate();
@@ -74,7 +78,11 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         Connection conn = getConnection();
         PreparedStatement ps = null;
 
-        ps = getConn().prepareStatement("DELETE FROM HTH.FEEDBACK WHERE ID = ?");
+        ps = getConn().prepareStatement("DELETE HTH.FEEDBACK, HTH.feedback_x_employee \n"
+                + "FROM HTH.FEEDBACK\n"
+                + "JOIN HTH.feedback_x_employee \n"
+                + "ON HTH.feedback_x_employee.id_feedback = HTH.FEEDBACK.ID\n"
+                + "WHERE HTH.FEEDBACK.ID = ?");
         ps.setInt(1, id);
 
         ps.executeUpdate();
