@@ -30,13 +30,13 @@ public class ProjectService extends Service
     }
     public void addCollaborator(ProjectTO project, EmployeeTO emp) throws Exception{
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.PROJECT_X_EMPLOYEE (ID, ID_PROJECT, ID_EMPLOYEE, HOURS_INVESTED) VALUES(?,?,?,?)");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.PROJECT_X_EMPLOYEE (ID, ID_PROJECT, ID_EMPLOYEE, HOURS_INVESTED) VALUES(?,?,?)");
         int id = 0;
         int hoursInvested = 0;
         ps.setInt(1, id);
         ps.setInt(2, project.getId());
         ps.setInt(3, emp.getId());
-        ps.setInt(4, hoursInvested);
+       
         ps.executeUpdate();
         close(ps);
         close(conn);
@@ -44,13 +44,13 @@ public class ProjectService extends Service
     
     public void addCollaborator(int idProject, int idEmployee) throws Exception{
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.PROJECT_X_EMPLOYEE (ID, ID_PROJECT, ID_EMPLOYEE, HOURS_INVESTED) VALUES(?,?,?,?)");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.PROJECT_X_EMPLOYEE (ID, ID_PROJECT, ID_EMPLOYEE) VALUES(?,?,?)");
         int id = 0;
         int hoursInvested = 0;
         ps.setInt(1, id);
         ps.setInt(2, idProject);
         ps.setInt(3, idEmployee);
-        ps.setInt(4, hoursInvested);
+        
         ps.executeUpdate();
         close(ps);
         close(conn);
