@@ -1,15 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.edu.ulatina.hth_db_connetion;
 
 import java.io.Serializable;
 
-/**
- *
- * @author javi
- */
 public class CreateActivityTO implements Serializable{
     
     private int id;
@@ -59,9 +52,5 @@ public class CreateActivityTO implements Serializable{
     public void setDescription(String Description) {
         this.Description = Description;
     }
-
-    
-
-    
-    
+  
 }

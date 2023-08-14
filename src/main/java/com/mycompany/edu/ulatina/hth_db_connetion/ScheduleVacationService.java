@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.edu.ulatina.hth_db_connetion;
 
 import java.sql.Connection;
@@ -11,10 +8,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Ale
- */
 public class ScheduleVacationService extends Service implements ICrud<ScheduleVacationTO> {
 
     public int getVacationIdByEmployeeId(int employeeId) throws Exception {

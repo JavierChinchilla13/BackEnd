@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.edu.ulatina.hth_db_connetion;
 
 import java.io.Serializable;
@@ -59,7 +56,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO> {
         Connection conn = getConnection();
         PreparedStatement ps = null;
 
-        ps = getConn().prepareStatement("DELETE FROM HTH.ACTIVITY WHERE ID = ?");
+        ps = getConn().prepareStatement("DELETE FROM HTH.ACTIVITY a WHERE a.ID = ?");
         ps.setInt(1, id);
 
         ps.executeUpdate();
@@ -71,7 +68,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO> {
 
     public void update(ActivityTO act, int idEmployee, int idActivity, Double hours) throws Exception {
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE HTH.CREATE_ACTIVITY SET id_employee=?, id_activity = ?, hours = ? WHERE id = ?");
+        PreparedStatement ps = conn.prepareStatement("UPDATE HTH.ACTIVITY a SET a.id_employee = ?, a.id_activity = ?, a.hours = ? WHERE a.id = ?");
         ps.setInt(1, idEmployee);
         ps.setInt(2, idActivity);
         ps.setDouble(3, hours);
@@ -143,8 +140,8 @@ public class ActivityService extends Service implements ICrud<ActivityTO> {
     }
 
     public ActivityTO searchByPk(int pk) throws Exception {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        ResultSet rs;
         Connection conn = getConnection();
 
         ps = getConn().prepareStatement("SELECT * FROM hth.activity a WHERE a.id = ?");

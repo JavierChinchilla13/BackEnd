@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.edu.ulatina.hth_db_connetion;
 
 import java.sql.Connection;
@@ -10,10 +7,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author javi
- */
 public class CreateActivityService extends Service implements ICrud< CreateActivityTO> {
 
     public void insert(CreateActivityTO activity) throws Exception {
@@ -58,7 +51,7 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         Connection conn = getConnection();
         PreparedStatement ps = null;
 
-        ps = getConn().prepareStatement("DELETE FROM HTH.CREATE_ACTIVITY WHERE ID=?");
+        ps = getConn().prepareStatement("DELETE FROM HTH.CREATE_ACTIVITY WHERE ID = ?");
         ps.setInt(1, id);
 
         ps.executeUpdate();
