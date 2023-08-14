@@ -21,8 +21,8 @@ public class Tester {
             
             List<ActivityTO> listAct = act.getSearchActivity(1, 1);
             
-            for(FeedbackTO u : fed.getEFeedback(1)){
-                System.out.println("id: " + u.getId() );
+            for(ActivityTO u : listAct){
+                System.out.println("Act name " + act.getActivityName(u.getId()));
 
             }
 

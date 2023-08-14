@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityService extends Service implements ICrud<ActivityTO>{
+public class ActivityService extends Service implements ICrud<ActivityTO> {
 
     @Override
     public void insert(ActivityTO activity) throws Exception {
@@ -21,14 +21,12 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         ps.setInt(2, activity.getIdEmployee());
         ps.setInt(3, activity.getIdActivity());
         ps.setDouble(4, activity.getHours());
-        
-        
 
         ps.executeUpdate();
         close(ps);
         close(conn);
     }
-    
+
     public void insert(int idEmployee, int idActivity, double hours) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?)");
@@ -36,7 +34,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         ps.setInt(2, idEmployee);
         ps.setInt(3, idActivity);
         ps.setDouble(4, hours);
-         
+
         ps.executeUpdate();
         close(ps);
         close(conn);
@@ -54,8 +52,9 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
 
         close(ps);
         close(conn);
-        
+
     }
+
     public void delete(int id) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
@@ -69,14 +68,14 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         super.close(conn);
 
     }
-    
+
     public void update(ActivityTO act, int idEmployee, int idActivity, Double hours) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("UPDATE HTH.CREATE_ACTIVITY SET id_employee=?, id_activity = ?, hours = ? WHERE id = ?");
         ps.setInt(1, idEmployee);
         ps.setInt(2, idActivity);
         ps.setDouble(3, hours);
-        
+
         ps.setInt(4, act.getId());
         ps.executeUpdate();
         close(ps);
@@ -98,8 +97,6 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
             int idEmployee = rs.getInt("id_employee");
             int idActivity = rs.getInt("id_activity");
             double hours = rs.getDouble("hours");
-            
-            
 
             activity = new ActivityTO(id, idEmployee, idActivity, hours);
 
@@ -113,9 +110,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
 
         return retorno;
     }
-    
-    
-    
+
     public List<ActivityTO> getSearchActivity(int id_employee, int id_project) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -132,9 +127,6 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
             int idEmployee = rs.getInt("id_employee");
             int idActivity = rs.getInt("id_activity");
             double hours = rs.getDouble("hours");
-            
-            
-            
 
             activity = new ActivityTO(id, idEmployee, idActivity, hours);
             //cActivity = new CreateActivityTO(id2, idProject, name, description);
@@ -149,29 +141,48 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
 
         return retorno;
     }
-    
+
+    public ActivityTO searchByPk(int pk) throws Exception {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection conn = getConnection();
+
+        ps = getConn().prepareStatement("SELECT * FROM hth.activity a WHERE a.id = ?");
+        ps.setInt(1, pk);
+        rs = ps.executeQuery();
+        ActivityTO activity;
+        int id = rs.getInt("id");
+        int idEmployee = rs.getInt("id_employee");
+        int idActivity = rs.getInt("id_activity");
+        double hours = rs.getDouble("hours");
+
+        activity = new ActivityTO(id, idEmployee, idActivity, hours);
+        super.close(rs);
+        super.close(ps);
+        super.close(conn);
+        return activity;
+    }
+
     public String getActivityName(int pk) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection conn = getConnection();
         String name = " ";
 
-        ps = getConn().prepareStatement("SELECT name FROM hth.activity, hth.create_activity \n"
-                + "Where id_activity = ? and hth.create_activity.id = id_activity");
+        ps = getConn().prepareStatement("SELECT ca.name\n"
+                + "FROM hth.create_activity ca\n"
+                + "INNER JOIN hth.activity a ON ca.id = a.id_activity\n"
+                + "WHERE a.id = ?;");
         ps.setInt(1, pk);
         rs = ps.executeQuery();
         while (rs.next()) {
             name = rs.getString("name");
- 
+
         }
         super.close(rs);
         super.close(ps);
         super.close(conn);
         return name;
     }
-    
-    
-    
-    
-    
+
 }
