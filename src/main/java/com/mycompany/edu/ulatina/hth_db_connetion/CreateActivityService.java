@@ -158,12 +158,9 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection conn = getConnection();
-        List<CreateActivityTO> retorno = new ArrayList<CreateActivityTO>();
+        List<CreateActivityTO> retorno = new ArrayList<>();
 
-        ps = getConn().prepareStatement("SELECT ca.id, ca.name\n"
-                + "FROM hth.create_activity ca\n"
-                + "LEFT JOIN hth.activity a ON ca.id = a.id_activity AND a.id_employee = ? \n"
-                + "WHERE ca.id_project = ? AND (a.id_activity IS NULL OR a.id_employee <> ?);");
+        ps = getConn().prepareStatement("SELECT ca.id, ca.id_project, ca.name, ca.description FROM hth.create_activity ca LEFT JOIN hth.activity a ON ca.id = a.id_activity AND a.id_employee = ?  WHERE ca.id_project = ? AND (a.id_activity IS NULL OR a.id_employee <> ?);");
         ps.setInt(1, id_employee);
         ps.setInt(2, id_project);
         ps.setInt(3, id_employee);
