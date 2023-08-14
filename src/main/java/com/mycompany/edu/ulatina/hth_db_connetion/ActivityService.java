@@ -19,8 +19,8 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?))");
         ps.setInt(1, 0);
         ps.setInt(2, activity.getIdEmployee());
-        ps.setInt(2, activity.getIdActivity());
-        ps.setDouble(3, activity.getHours());
+        ps.setInt(3, activity.getIdActivity());
+        ps.setDouble(4, activity.getHours());
         
         
 
@@ -34,8 +34,8 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?))");
         ps.setInt(1, 0);
         ps.setInt(2, idEmployee);
-        ps.setInt(2, idActivity);
-        ps.setDouble(3, hours);
+        ps.setInt(3, idActivity);
+        ps.setDouble(4, hours);
          
         ps.executeUpdate();
         close(ps);
