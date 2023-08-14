@@ -150,13 +150,14 @@ public class ActivityService extends Service implements ICrud<ActivityTO> {
         ps = getConn().prepareStatement("SELECT * FROM hth.activity a WHERE a.id = ?");
         ps.setInt(1, pk);
         rs = ps.executeQuery();
-        ActivityTO activity;
-        int id = rs.getInt("id");
-        int idEmployee = rs.getInt("id_employee");
-        int idActivity = rs.getInt("id_activity");
-        double hours = rs.getDouble("hours");
-
-        activity = new ActivityTO(id, idEmployee, idActivity, hours);
+        ActivityTO activity = null;
+        if (rs.next()) {
+            int id = rs.getInt("id");
+            int idEmployee = rs.getInt("id_employee");
+            int idActivity = rs.getInt("id_activity");
+            double hours = rs.getDouble("hours");
+            activity = new ActivityTO(id, idEmployee, idActivity, hours);
+        }
         super.close(rs);
         super.close(ps);
         super.close(conn);

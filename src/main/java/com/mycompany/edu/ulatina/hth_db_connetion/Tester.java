@@ -22,9 +22,16 @@ public class Tester {
             List<ActivityTO> listAct = act.getSearchActivity(1, 1);
             
             for(ActivityTO u : listAct){
-                System.out.println("Act name " + act.getActivityName(u.getId()));
+                
 
             }
+            System.out.println("Act ID: " + act.searchByPk(1).getId());
+            System.out.println("Act ID act: " + act.searchByPk(1).getIdActivity());
+            System.out.println("Act hours: " + act.searchByPk(1).getHours());
+            
+            System.out.println("Act ID: " + act.searchByPk(2).getId());
+            System.out.println("Act ID act: " + act.searchByPk(2).getIdActivity());
+            System.out.println("Act hours: " + act.searchByPk(2).getHours());
 
         } catch (Exception e) {
             e.printStackTrace();
