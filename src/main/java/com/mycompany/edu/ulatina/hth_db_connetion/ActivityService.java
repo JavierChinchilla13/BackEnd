@@ -16,7 +16,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
     @Override
     public void insert(ActivityTO activity) throws Exception {
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?))");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?)");
         ps.setInt(1, 0);
         ps.setInt(2, activity.getIdEmployee());
         ps.setInt(3, activity.getIdActivity());
@@ -31,7 +31,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
     
     public void insert(int idEmployee, int idActivity, double hours) throws Exception {
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?))");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?,?)");
         ps.setInt(1, 0);
         ps.setInt(2, idEmployee);
         ps.setInt(3, idActivity);
