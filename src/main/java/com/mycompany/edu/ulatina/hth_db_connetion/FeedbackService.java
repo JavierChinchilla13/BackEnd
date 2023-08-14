@@ -259,7 +259,7 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
     public List<FeedbackTO> getEFeedback(int employee) throws Exception {
         Connection conn = getConnection();
         List<FeedbackTO> feedbackList = new ArrayList<>();
-        PreparedStatement ps = conn.prepareStatement("SELECT hth.feedback.id, hth.feedback.name, hth.feedback.date_of_feedback, hth.feedback.id_status, hth.feedback.id_type, hth.feedback.id_creator \n"
+        PreparedStatement ps = conn.prepareStatement("SELECT hth.feedback.id, hth.feedback.description, hth.feedback.name, hth.feedback.date_of_feedback, hth.feedback.id_status, hth.feedback.id_type, hth.feedback.id_creator \n"
                 + "FROM hth.feedback, hth.feedback_x_employee\n"
                 + "where id_employee = ? and hth.feedback.id = id_feedback");
         ps.setInt(1, employee);
