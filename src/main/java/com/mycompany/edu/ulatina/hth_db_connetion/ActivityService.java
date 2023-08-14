@@ -11,10 +11,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author javi
- */
 public class ActivityService extends Service implements ICrud<ActivityTO>{
 
     @Override

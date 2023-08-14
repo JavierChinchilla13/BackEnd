@@ -24,7 +24,6 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         ps.setInt(2, activity.getIdProject());
         ps.setString(3, activity.getName());
         ps.setString(4, activity.getDescription());
-        
 
         ps.executeUpdate();
         close(ps);
@@ -43,8 +42,7 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         close(ps);
         close(conn);
    }*/
-    
-    /*public void insertActivyToEmployee(int idEmployee, int idActivity) throws Exception {
+ /*public void insertActivyToEmployee(int idEmployee, int idActivity) throws Exception {
 
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO HTH.ACTIVITY VALUES(?,?,?))");
@@ -56,7 +54,6 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         close(ps);
         close(conn);
     }*/
-
     public void delete(int id) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
@@ -77,7 +74,7 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         ps.setInt(1, idProject);
         ps.setString(2, name);
         ps.setString(3, description);
-        
+
         ps.setInt(4, act.getId());
         ps.executeUpdate();
         close(ps);
@@ -99,7 +96,6 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
             int idProject = rs.getInt("id_project");
             String name = rs.getString("name");
             String description = rs.getString("description");
-            
 
             activity = new CreateActivityTO(id, idProject, name, description);
 
@@ -113,6 +109,7 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
 
         return retorno;
     }
+
     public List<CreateActivityTO> getActividad(int pk) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -122,14 +119,13 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
         ps = getConn().prepareStatement("SELECT * FROM HTH.CREATE_ACTIVITY WHERE id_project = ?");
         ps.setInt(1, pk);
         rs = ps.executeQuery();
-        
+
         while (rs.next()) {
             CreateActivityTO activity;
             int id = rs.getInt("id");
             int idProject = rs.getInt("id_project");
             String name = rs.getString("name");
             String description = rs.getString("description");
-            
 
             activity = new CreateActivityTO(id, idProject, name, description);
 
@@ -156,6 +152,40 @@ public class CreateActivityService extends Service implements ICrud< CreateActiv
 
         close(ps);
         close(conn);
+    }
+
+    public List<CreateActivityTO> getActivitiesNotAssignedTo(int id_employee, int id_project) throws Exception {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection conn = getConnection();
+        List<CreateActivityTO> retorno = new ArrayList<CreateActivityTO>();
+
+        ps = getConn().prepareStatement("SELECT ca.id, ca.name\n"
+                + "FROM hth.create_activity ca\n"
+                + "LEFT JOIN hth.activity a ON ca.id = a.id_activity AND a.id_employee = ? \n"
+                + "WHERE ca.id_project = ? AND (a.id_activity IS NULL OR a.id_employee <> ?);");
+        ps.setInt(1, id_employee);
+        ps.setInt(2, id_project);
+        ps.setInt(3, id_employee);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            CreateActivityTO activity;
+            int id = rs.getInt("id");
+            int idProject = rs.getInt("id_project");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+
+            activity = new CreateActivityTO(id, idProject, name, description);
+
+            retorno.add(activity);
+
+        }
+
+        super.close(rs);
+        super.close(ps);
+        super.close(conn);
+
+        return retorno;
     }
 
 }
