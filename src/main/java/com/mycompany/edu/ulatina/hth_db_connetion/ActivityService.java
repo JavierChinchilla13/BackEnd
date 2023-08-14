@@ -122,7 +122,7 @@ public class ActivityService extends Service implements ICrud<ActivityTO>{
         Connection conn = getConnection();
         List<ActivityTO> retorno = new ArrayList<ActivityTO>();
 
-        ps = getConn().prepareStatement("SELECT a.id, a.id_employee, a.id_activity, a.hours FROM hth.activity a, hth.create_activity ca Where a.id_employee = 1 and ca.id_project = 1 and ca.id = a.id_activity;");
+        ps = getConn().prepareStatement("SELECT a.id, a.id_employee, a.id_activity, a.hours FROM hth.activity a, hth.create_activity ca Where a.id_employee = ? and ca.id_project = ? and ca.id = a.id_activity;");
         ps.setInt(1, id_employee);
         ps.setInt(2, id_project);
         rs = ps.executeQuery();
