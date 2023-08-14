@@ -135,5 +135,30 @@ public class ProjectService extends Service
         close(conn);
         return listaRetorno;
     }
+    
+    public List<ProjectTO> getMYProjects(int pk) throws Exception {
+        Connection conn = getConnection();
+        List<ProjectTO> listaRetorno = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT project.id, project.name, project.id_status_detail, project.starting_date, project.ending_date \n"
+                + "FROM hth.project, hth.project_x_employee\n"
+                + "WHERE hth.project_x_employee.id_employee = ?\n"
+                + "and project.id = hth.project_x_employee.id_project");
+        ps.setInt(1, pk);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            int status = rs.getInt("ID_STATUS_DETAIL");
+            Date startingDate = rs.getDate("STARTING_DATE");
+            Date endingDate = rs.getDate("ENDING_DATE");
+           
+            ProjectTO project = new ProjectTO(id, name, status, startingDate, endingDate);
+            listaRetorno.add(project);
+        }
+        close(rs);
+        close(ps);
+        close(conn);
+        return listaRetorno;
+    }
 
 }
