@@ -158,4 +158,13 @@ public class ProjectXEmployeeService extends Service implements ICrud<ProjectXEm
         return projectXEmployeeList;
     }
 
+    public void deleteEmployeeFromProject(int pK) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM HTH.PROJECT_X_EMPLOYEE WHERE ID_EMPLOYEE = ?");
+        ps.setInt(1, pK);
+        ps.executeUpdate();
+        close(ps);
+        close(conn);
+    }
+    
 }
