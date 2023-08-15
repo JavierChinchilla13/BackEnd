@@ -129,12 +129,13 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         close(conn);
     }
 
-    public void insertPj(int idProject, int idFeedback) throws Exception {
+    public void insertPj(int idProject) throws Exception {
         Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO hth.feedback_x_project VALUES(?,?,?)");
-        ps.setInt(1, 0);
-        ps.setInt(2, idProject);
-        ps.setInt(3, idFeedback);
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO hth.feedback_x_project  (id_project, id_feedback)VALUES(?,(SELECT MAX(id) \n" +
+"               FROM hth.feedback where id_type = '21' ))");
+       
+        ps.setInt(1, idProject);
+       
 
         ps.executeUpdate();
         close(ps);
@@ -264,6 +265,34 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
                 + "FROM hth.feedback, hth.feedback_x_employee\n"
                 + "where id_employee = ? and hth.feedback.id = id_feedback");
         ps.setInt(1, employee);
+        
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            String description = rs.getString("DESCRIPTION");
+            Date dateOfFeedback = rs.getDate("DATE_OF_FEEDBACK");
+            int idStatus = rs.getInt("ID_STATUS");
+            int idType = rs.getInt("ID_TYPE");
+            int idCreator = rs.getInt("ID_CREATOR");
+
+            FeedbackTO feedbackTO = new FeedbackTO(id, name, description, dateOfFeedback, idStatus, idType, idCreator);
+            feedbackList.add(feedbackTO);
+        }
+        close(rs);
+        close(ps);
+        close(conn);
+        return feedbackList;
+    }
+    
+    public List<FeedbackTO> getPFeedback(int project) throws Exception {
+        Connection conn = getConnection();
+        List<FeedbackTO> feedbackList = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT hth.feedback.id, hth.feedback.description, hth.feedback.name, hth.feedback.date_of_feedback, hth.feedback.id_status, hth.feedback.id_type, hth.feedback.id_creator \n" +
+"                FROM hth.feedback, hth.feedback_x_project \n" +
+"                where id_project = ? and hth.feedback.id = id_feedback");
+        ps.setInt(1, project);
         
 
         ResultSet rs = ps.executeQuery();
