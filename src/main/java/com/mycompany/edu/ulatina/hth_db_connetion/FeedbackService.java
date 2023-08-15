@@ -67,7 +67,7 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
         close(conn);
     }
 
-    public void delete(int id) throws Exception {
+    public void deleteEmp(int id) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
 
@@ -75,6 +75,42 @@ public class FeedbackService extends Service implements ICrud<FeedbackTO> {
                 + "FROM HTH.FEEDBACK\n"
                 + "JOIN HTH.feedback_x_employee \n"
                 + "ON HTH.feedback_x_employee.id_feedback = HTH.FEEDBACK.ID\n"
+                + "WHERE HTH.FEEDBACK.ID = ?");
+        ps.setInt(1, id);
+
+        ps.executeUpdate();
+
+        super.close(ps);
+        super.close(conn);
+
+    }
+    
+    public void deletePj(int id) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement ps = null;
+
+        ps = getConn().prepareStatement("DELETE HTH.FEEDBACK, hth.feedback_x_project \n"
+                + "FROM HTH.FEEDBACK\n"
+                + "JOIN hth.feedback_x_project \n"
+                + "ON hth.feedback_x_project.id_feedback = HTH.FEEDBACK.ID\n"
+                + "WHERE HTH.FEEDBACK.ID = ?");
+        ps.setInt(1, id);
+
+        ps.executeUpdate();
+
+        super.close(ps);
+        super.close(conn);
+
+    }
+    
+    public void deleteAct(int id) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement ps = null;
+
+        ps = getConn().prepareStatement("DELETE HTH.FEEDBACK, hth.feedback_x_project_x_employee  \n"
+                + "FROM HTH.FEEDBACK\n"
+                + "JOIN hth.feedback_x_project_x_employee \n"
+                + "ON hth.feedback_x_project_x_employee.id_feedback = HTH.FEEDBACK.ID\n"
                 + "WHERE HTH.FEEDBACK.ID = ?");
         ps.setInt(1, id);
 
