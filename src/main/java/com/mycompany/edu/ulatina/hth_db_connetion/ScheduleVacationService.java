@@ -237,6 +237,34 @@ public class ScheduleVacationService extends Service implements ICrud<ScheduleVa
 
         return scheduleVacationList;
     }
+    
+    public List<ScheduleVacationTO> getScheduleVacationsSupervisor(int supervisor) throws Exception {
+        Connection conn = getConnection();
+        List<ScheduleVacationTO> scheduleVacationList = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT HTH.SCHEDULE_VACATION.ID,ID_VACATION,START_DATE,END_DATE,HTH.SCHEDULE_VACATION.ID_STATUS_DETAIL,DESCRIPTION \n"
+                + "FROM HTH.SCHEDULE_VACATION, HTH.EMPLOYEE, hth.vacation \n"
+                + "WHERE HTH.SCHEDULE_VACATION.ID_STATUS_DETAIL = ?  AND id_supervisor = ? AND HTH.EMPLOYEE.id = hth.vacation.id_employee AND hth.vacation.id = HTH.SCHEDULE_VACATION.id_vacation");
+        ps.setInt(1, 17);
+        ps.setInt(2, supervisor);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            int idVacation = rs.getInt("ID_VACATION");
+            Date startDate = rs.getDate("START_DATE");
+            Date endDate = rs.getDate("END_DATE");
+            int idStatus = rs.getInt("ID_STATUS_DETAIL");
+            String description = rs.getString("DESCRIPTION");
+            ScheduleVacationTO scheduleVacationTO = new ScheduleVacationTO(id, idVacation, startDate, endDate, idStatus, description);
+            scheduleVacationList.add(scheduleVacationTO);
+        }
+
+        close(rs);
+        close(ps);
+        close(conn);
+
+        return scheduleVacationList;
+    }
 
     public List<ScheduleVacationTO> getNewScheduleVacation(int pk) throws Exception {
         Connection conn = getConnection();

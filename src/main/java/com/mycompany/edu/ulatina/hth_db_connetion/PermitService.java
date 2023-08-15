@@ -239,6 +239,32 @@ public class PermitService extends Service
         return listaRetorno;
     }
     
+     public List<PermitTO> searchBySupervisor(int stat, int supervisor) throws Exception {
+        Connection conn = getConnection();
+        //PermitTO permit = null;
+         List<PermitTO> listaRetorno = new ArrayList<>();
+         PreparedStatement ps = conn.prepareStatement("SELECT HTH.WORK_PERMIT.ID, ID_EMPLOYEE, DATE, DESCRIPTION, HTH.WORK_PERMIT.ID_STATUS_DETAIL, RESPONSE \n"
+                 + "FROM HTH.WORK_PERMIT, HTH.EMPLOYEE \n"
+                 + "WHERE HTH.WORK_PERMIT.ID_STATUS_DETAIL = ? AND id_supervisor = ? AND ID_EMPLOYEE= HTH.EMPLOYEE.id");
+         ps.setInt(1, stat);
+         ps.setInt(2, supervisor);
+         ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            int employee = rs.getInt("ID_EMPLOYEE");
+            Date date = rs.getDate("DATE");
+            String description = rs.getString("DESCRIPTION");
+            int status = rs.getInt("id_status_detail");
+            String response = rs.getString("response");
+            PermitTO permit  = new PermitTO(id, employee, date, description, status, response);
+            listaRetorno.add(permit);
+        }
+        close(rs);
+        close(ps);
+        close(conn);
+        return listaRetorno;
+    }
+    
     public List<PermitTO> getNew(int pk) throws Exception {
         Connection conn = getConnection();
         //PermitTO permit = null;
