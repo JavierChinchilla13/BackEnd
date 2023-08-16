@@ -637,5 +637,22 @@ public class EmployeeService extends Service implements ICrud<EmployeeTO> {
         super.close(conn);
         return retorno;
     }
+    
+    public int searchIdByEmailPass(String emailToSearch, String passwordToSearch) throws Exception {
+        Connection conn = getConnection();
+        EmployeeTO employee = null;
+        PreparedStatement ps = conn.prepareStatement("SELECT E.ID FROM HTH.EMPLOYEE E WHERE E.EMAIL = ? AND E.PASSWORD = ?");
+        ps.setString(1, emailToSearch);
+        ps.setString(2, passwordToSearch);
+        ResultSet rs = ps.executeQuery();
+        int result = 0;
+        if (rs.next()) {
+            result = rs.getInt("id");
+        }
+        close(rs);
+        close(ps);
+        close(conn);
+        return result;
+    }
 
 }
