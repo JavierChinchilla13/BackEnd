@@ -326,7 +326,7 @@ public class ScheduleVacationService extends Service implements ICrud<ScheduleVa
        
         ps = getConn().prepareStatement("Select first_name, last_name \n"
                 + "from hth.employee, hth.vacation, hth.schedule_vacation\n"
-                + "WHERE employee.id = vacation.id and vacation.id = schedule_vacation.id_vacation AND schedule_vacation.id = ?");
+                + "WHERE employee.id = vacation.id_employee and vacation.id = schedule_vacation.id_vacation AND schedule_vacation.id = ?");
         ps.setInt(1, pk);
         rs = ps.executeQuery();
         while (rs.next()) {
