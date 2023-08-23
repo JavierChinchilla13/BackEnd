@@ -269,7 +269,7 @@ public class PermitService extends Service
         Connection conn = getConnection();
         //PermitTO permit = null;
         List<PermitTO> listaRetorno = new ArrayList<>();
-        PreparedStatement ps = conn.prepareStatement("SELECT ID, ID_EMPLOYEE, DATE, DESCRIPTION, ID_STATUS_DETAIL, RESPONSE FROM HTH.WORK_PERMIT WHERE ID_STATUS_DETAIL = 14 OR current_date()< Date AND ID_EMPLOYEE = ?");
+        PreparedStatement ps = conn.prepareStatement("SELECT ID, ID_EMPLOYEE, DATE, DESCRIPTION, ID_STATUS_DETAIL, RESPONSE FROM HTH.WORK_PERMIT WHERE ID_STATUS_DETAIL = 14 AND current_date()< Date AND ID_EMPLOYEE = ?");
         ps.setInt(1, pk);
         ResultSet rs = ps.executeQuery();
         

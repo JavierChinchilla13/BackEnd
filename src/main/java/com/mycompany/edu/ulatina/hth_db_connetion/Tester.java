@@ -21,11 +21,14 @@ public class Tester {
             List<EmployeeTO> list2 = eServ.getEmployeesNotOnProyect(3);
             
             List<ActivityTO> listAct = act.getSearchActivity(1, 1);
-            
-            for(ActivityTO u : listAct){
+            */
+            for(PermitTO u : per.getNew(1)){
+                System.out.println(u.getId());
                 
 
             }
+            
+            /*
             System.out.println("Act ID: " + act.searchByPk(1).getId());
             System.out.println("Act ID act: " + act.searchByPk(1).getIdActivity());
             System.out.println("Act hours: " + act.searchByPk(1).getHours());
@@ -34,7 +37,7 @@ public class Tester {
             System.out.println("Act ID act: " + act.searchByPk(2).getIdActivity());
             System.out.println("Act hours: " + act.searchByPk(2).getHours());*/
             
-            projectXEmployeeService.deleteEmployeeFromProject(0,17);
+           // projectXEmployeeService.deleteEmployeeFromProject(0,17);
 
         } catch (Exception e) {
             e.printStackTrace();
